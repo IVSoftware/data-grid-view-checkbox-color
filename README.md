@@ -1,4 +1,4 @@
-# Data Grid View Checkbox Color
+## Data Grid View Checkbox Color
 
 As I understand it, your goal is to have control over the fill color `DataGridViewCheckBoxCell` cells.
 
