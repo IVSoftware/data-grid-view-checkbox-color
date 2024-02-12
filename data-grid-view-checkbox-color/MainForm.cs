@@ -23,7 +23,7 @@ namespace data_grid_view_checkbox_color
                 {
                     if (e.RowIndex >= 0 && e.ColumnIndex >= 0 && dataGridView[e.ColumnIndex, e.RowIndex] is DataGridViewCheckBoxCell checkbox)
                     {
-                        if(dataGridView.CurrentCell?.IsInEditMode == true)
+                        if (dataGridView[e.ColumnIndex, e.RowIndex].IsInEditMode == true)
                         {
                             dataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
                         }
