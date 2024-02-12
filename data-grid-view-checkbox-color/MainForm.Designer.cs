@@ -55,6 +55,7 @@
             Name = "MainForm";
             Padding = new Padding(6);
             Text = "Main Form";
+            StartPosition = FormStartPosition.CenterScreen;
             ((System.ComponentModel.ISupportInitialize)dataGridView).EndInit();
             ResumeLayout(false);
         }
