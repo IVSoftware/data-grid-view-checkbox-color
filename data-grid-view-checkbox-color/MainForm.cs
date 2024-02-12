@@ -39,7 +39,7 @@ namespace data_grid_view_checkbox_color
                             Brush brush;   
                             switch (dataGridView.Columns[e.ColumnIndex].Name)
                             { 
-                                // Use a static brush (don't require dispose)
+                                // Use a static brush (doesn't require dispose)
                                 case nameof(DemoRecordClass.IsGreen): brush = Brushes.Green; break;
                                 case nameof(DemoRecordClass.IsBlue): brush = Brushes.Blue; break;
                                 case nameof(DemoRecordClass.IsRed): brush = Brushes.Red; break;
