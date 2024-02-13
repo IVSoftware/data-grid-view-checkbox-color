@@ -1,8 +1,37 @@
 ## Data Grid View Checkbox Color
 
-As I understand it, your goal is to have control over the fill color `DataGridViewCheckBoxCell` cells.
+As I understand it, your goal is to have control over the selection back color and possibly the color of the fill on the checkboxes themselves. 
 
-[![custom color check box cells][1]][1]
+[![custom colors][1]][1]
+
+This snippet manipulates the `DefaultCellStyle.SelectionBackColor` of the entire DGV but you can override this for an individual cell using its `Style` property, or for a single column using the column's`DefaultCellStyle`. So, if this is all you need to do, you don't necessarily have to custom paint at all.
+
+```
+public MainForm()
+{
+    InitializeComponent();
+    Disposed += (sender, e) => Provider.Dispose();
+    foreach (var radio in tableLayoutPanelRadios.Controls.OfType<RadioButton>())
+    {
+        radio.CheckedChanged += (sender, e) =>
+        {
+            switch (radio.Name)
+            {
+                case nameof(radioNone):     // <= Used in `CellPainting` handler for e.PaintBackground.
+                case nameof(radioDefault):
+                    dataGridView.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 0x78, 0xd7);
+                    dataGridView.DefaultCellStyle.SelectionForeColor = Color.White;
+                    break;
+                case nameof(radioYellow):
+                    dataGridView.DefaultCellStyle.SelectionBackColor = Color.LightYellow;
+                    dataGridView.DefaultCellStyle.SelectionForeColor = Color.Red;
+                    break;
+            }
+        };
+    }
+}
+```
+___
 
 Your comment mentions the `CellPainting` event and one decent way to handle it is by drawing a unicode text glyph. For example, the custom glyph font **checkbox-icons.ttf** used in the above screenshot was made on [Fontello](http://www.fontello.com), set as an embedded resource, and loaded using the utility extension shown below.
 
@@ -14,11 +43,9 @@ ___
 ```csharp
 public partial class MainForm : Form
 {
-    public MainForm()
-    {
-        InitializeComponent();
-        Disposed += (sender, e) => Provider.Dispose();
-    }
+    .
+    .
+    .
     FontFamily CheckBoxFont { get; } = "checkbox-icons".LoadFamilyFromEmbeddedFont();
     protected override void OnLoad(EventArgs e)
     {
@@ -141,5 +168,6 @@ public static class Provider
 }
 ```
 
-  [1]: https://i.stack.imgur.com/nrJlg.png
+
+  [1]: https://i.stack.imgur.com/BvPOt.png
   [2]: https://i.stack.imgur.com/LoQRP.png

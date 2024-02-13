@@ -1,6 +1,7 @@
 
 using System.ComponentModel;
 using System.Drawing.Text;
+using System.Windows.Forms;
 
 namespace data_grid_view_checkbox_color
 {
@@ -10,6 +11,24 @@ namespace data_grid_view_checkbox_color
         {
             InitializeComponent();
             Disposed += (sender, e) => Provider.Dispose();
+            foreach (var radio in tableLayoutPanelRadios.Controls.OfType<RadioButton>())
+            {
+                radio.CheckedChanged += (sender, e) =>
+                {
+                    switch (radio.Name)
+                    {
+                        case nameof(radioNone):     // <= Used in `CellPainting` handler for e.PaintBackground.
+                        case nameof(radioDefault):
+                            dataGridView.DefaultCellStyle.SelectionBackColor = Color.FromArgb(0, 0x78, 0xd7);
+                            dataGridView.DefaultCellStyle.SelectionForeColor = Color.White;
+                            break;
+                        case nameof(radioYellow):
+                            dataGridView.DefaultCellStyle.SelectionBackColor = Color.LightYellow;
+                            dataGridView.DefaultCellStyle.SelectionForeColor = Color.Red;
+                            break;
+                    }
+                };
+            }
         }
         FontFamily CheckBoxFont { get; } = "checkbox-icons".LoadFamilyFromEmbeddedFont();
         protected override void OnLoad(EventArgs e)
@@ -28,7 +47,7 @@ namespace data_grid_view_checkbox_color
                             dataGridView.CommitEdit(DataGridViewDataErrorContexts.Commit);
                         }
                         e.Handled = true;
-                        e.PaintBackground(e.CellBounds, false);
+                        e.PaintBackground(e.CellBounds, !radioNone.Checked);
                         using (var glyphFont = new Font(CheckBoxFont, dataGridView.DefaultCellStyle.Font.Size + 1))
                         using (var sf = new StringFormat
                         {
